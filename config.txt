@@ -1,33 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Codespaces
-Marketplace
-Explore
- 
-@aroth01 
-aroth01
-/
-evpntest2
-Private
-Cannot fork because you own this repository and are not a member of any organizations.
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-evpntest2/clab-test-evpn-lab/edge-rtr1/tftpboot/config.txt
-@aroth01
-aroth01 add base files
-Latest commit f1f4ef7 10 hours ago
- History
- 1 contributor
-Executable File  611 lines (604 sloc)  15.9 KB
-
 # TiMOS-C-21.10.R9 cpm/x86_64 Nokia 7250 IXR Copyright (c) 2000-2022 Nokia.
 # All rights reserved. All use subject to applicable license agreements.
 # Built on Wed Nov 30 13:05:52 PST 2022 by builder in /builds/c/2110B/R9/panos/main/sros
@@ -639,18 +609,3 @@ echo "Log all events for service vprn, log syslog tls-client-profile Configurati
 exit all
 
 # Finished SAT FEB 18 03:54:06 2023 UTC
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-evpntest2/config.txt at main · aroth01/evpntest2
