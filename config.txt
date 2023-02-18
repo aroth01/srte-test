@@ -1,0 +1,656 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Codespaces
+Marketplace
+Explore
+ 
+@aroth01 
+aroth01
+/
+evpntest2
+Private
+Cannot fork because you own this repository and are not a member of any organizations.
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+evpntest2/clab-test-evpn-lab/edge-rtr1/tftpboot/config.txt
+@aroth01
+aroth01 add base files
+Latest commit f1f4ef7 10 hours ago
+ History
+ 1 contributor
+Executable File  611 lines (604 sloc)  15.9 KB
+
+# TiMOS-C-21.10.R9 cpm/x86_64 Nokia 7250 IXR Copyright (c) 2000-2022 Nokia.
+# All rights reserved. All use subject to applicable license agreements.
+# Built on Wed Nov 30 13:05:52 PST 2022 by builder in /builds/c/2110B/R9/panos/main/sros
+# Configuration format version 21.10 revision 0
+
+# Generated SAT FEB 18 03:54:06 2023 UTC
+
+exit all
+configure
+#--------------------------------------------------
+echo "System Configuration"
+#--------------------------------------------------
+    system
+        name "edge-rtr1"
+        netconf
+            auto-config-save
+            no shutdown
+        exit
+        snmp
+            streaming
+                no shutdown
+            exit
+            packet-size 9216
+        exit
+        time
+            sntp
+                shutdown
+            exit
+            zone UTC
+        exit
+    exit
+#--------------------------------------------------
+echo "System Security Configuration"
+#--------------------------------------------------
+    system
+        security
+            profile "administrative"
+                netconf
+                    base-op-authorization
+                        action
+                        cancel-commit
+                        close-session
+                        commit
+                        copy-config
+                        create-subscription
+                        delete-config
+                        discard-changes
+                        edit-config
+                        get
+                        get-config
+                        get-data
+                        get-schema
+                        kill-session
+                        lock
+                        validate
+                    exit
+                exit
+                entry 10
+                    match "configure system security"
+                    action permit
+                exit
+                entry 20
+                    match "show system security"
+                    action permit
+                exit
+                entry 30
+                    match "tools perform security"
+                    action permit
+                exit
+                entry 40
+                    match "tools dump security"
+                    action permit
+                exit
+                entry 50
+                    match "admin system security"
+                    action permit
+                exit
+                entry 100
+                    match "configure li"
+                    action deny
+                exit
+                entry 110
+                    match "show li"
+                    action deny
+                exit
+                entry 111
+                    match "clear li"
+                    action deny
+                exit
+                entry 112
+                    match "tools dump li"
+                    action deny
+                exit
+            exit
+            user "admin"
+                password "$2y$10$TQrZlpBDra86.qoexZUzQeBXDY1FcdDhGWdD9lLxMuFyPVSm0OGy6"
+                access console ftp snmp netconf grpc
+                console
+                    member "administrative"
+                exit
+            exit
+            user "vrnetlab"
+                password "$2y$10$6HS0J1kcPFUtHTMLUZEbc.IS4v6eCol5s5JXqrpQ1XveXHT5.rQJ6"
+                access console netconf
+                console
+                    member "administrative"
+                    member "default"
+                exit
+            exit
+        exit
+    exit
+#--------------------------------------------------
+echo "System Login Control Configuration"
+#--------------------------------------------------
+    system
+        login-control
+            ssh
+                inbound-max-sessions 30
+            exit
+        exit
+    exit
+#--------------------------------------------------
+echo "Log Configuration"
+#--------------------------------------------------
+    log
+        log-id 90 name "90"
+            shutdown
+            from debug-trace
+        exit
+    exit
+#--------------------------------------------------
+echo "System gRPC Configuration"
+#--------------------------------------------------
+    system
+        grpc
+            allow-unsecure-connection
+            gnmi
+                auto-config-save
+                no shutdown
+            exit
+            no shutdown
+        exit
+    exit
+#--------------------------------------------------
+echo "Card Configuration"
+#--------------------------------------------------
+    card 1
+        card-type imm24-sfp++8-sfp28+2-qsfp28
+        mda 1
+            no shutdown
+        exit
+        no shutdown
+    exit
+#--------------------------------------------------
+echo "Connector Configuration"
+#--------------------------------------------------
+    port 1/1/c33
+        shutdown
+    exit
+    port 1/1/c34
+        shutdown
+    exit
+#--------------------------------------------------
+echo "Port Configuration"
+#--------------------------------------------------
+    port 1/1/1
+        description "core-rtr2"
+        ethernet
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/2
+        description "TO-core-rtr1"
+        ethernet
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/3
+        description "ads-rtr1"
+        ethernet
+            mode access
+            encap-type dot1q
+            mtu 9212
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/4
+        description "ads-rtr2"
+        ethernet
+            mode access
+            encap-type dot1q
+            mtu 9212
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/5
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/6
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/7
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/8
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/9
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/10
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/11
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/12
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/13
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/14
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/15
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/16
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/17
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/18
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/19
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/20
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/21
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/22
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/23
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/24
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/25
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/26
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/27
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/28
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/29
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/30
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/31
+        shutdown
+        ethernet
+        exit
+    exit
+    port 1/1/32
+        shutdown
+        ethernet
+        exit
+    exit
+#--------------------------------------------------
+echo "System Sync-If-Timing Configuration"
+#--------------------------------------------------
+    system
+        sync-if-timing
+            begin
+            commit
+        exit
+    exit
+#--------------------------------------------------
+echo "LAG Configuration"
+#--------------------------------------------------
+    lag 1
+        description "ads-rtrr1"
+        mode access
+        encap-type dot1q
+        port 1/1/3
+        lacp active administrative-key 101 system-id 00:00:00:00:00:01
+        no shutdown
+    exit
+    lag 2
+        description "ads-rtr2"
+        mode access
+        encap-type dot1q
+        port 1/1/4
+        lacp active administrative-key 102
+        no shutdown
+    exit
+#--------------------------------------------------
+echo "Management Router Configuration"
+#--------------------------------------------------
+    router management
+    exit
+
+#--------------------------------------------------
+echo "Router (Network Side) Configuration"
+#--------------------------------------------------
+    router Base
+        interface "TO-core-rtr1"
+            address 192.168.0.0/31
+            port 1/1/2
+            ingress
+            exit
+            bfd 100 receive 100 multiplier 3
+            no shutdown
+        exit
+        interface "TO-edge-rtr2"
+            address 192.168.1.0/31
+            ingress
+            exit
+            bfd 100 receive 100 multiplier 3
+            no shutdown
+        exit
+        interface "core-rtr2"
+            address 192.168.9.1/31
+            port 1/1/1
+            ingress
+            exit
+            bfd 100 receive 100 multiplier 3
+            no shutdown
+        exit
+        interface "system"
+            address 10.2.0.1/32
+            no shutdown
+        exit
+        autonomous-system 53407
+#--------------------------------------------------
+echo "MPLS Label Range Configuration"
+#--------------------------------------------------
+        mpls-labels
+            sr-labels start 500000 end 524286
+            reserved-label-block "bum"
+                start-label 400000 end-label 499996
+            exit
+        exit
+#--------------------------------------------------
+echo "ISIS Configuration"
+#--------------------------------------------------
+        isis 0
+            area-id 00
+            reference-bandwidth 10000000000
+            advertise-router-capability area
+            loopfree-alternates
+                ti-lfa
+                    node-protect
+                exit
+            exit
+            multi-topology
+                ipv6-unicast
+            exit
+            igp-shortcut
+                tunnel-next-hop
+                    family ipv4
+                        resolution filter
+                        resolution-filter
+                            sr-te
+                        exit
+                    exit
+                exit
+                no shutdown
+            exit
+            segment-routing
+                prefix-sid-range global
+                tunnel-mtu 8000
+                no shutdown
+            exit
+            interface "system"
+                ipv4-node-sid index 21
+                no shutdown
+            exit
+            interface "TO-core-rtr1"
+                no shutdown
+            exit
+            interface "TO-edge-rtr2"
+                no shutdown
+            exit
+            interface "core-rtr2"
+                bfd-enable ipv4
+                no shutdown
+            exit
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "MPLS Configuration"
+#--------------------------------------------------
+        mpls
+            interface "system"
+                no shutdown
+            exit
+        exit
+#--------------------------------------------------
+echo "RSVP Configuration"
+#--------------------------------------------------
+        rsvp
+            shutdown
+            interface "system"
+                no shutdown
+            exit
+        exit
+#--------------------------------------------------
+echo "MPLS LSP Configuration"
+#--------------------------------------------------
+        mpls
+            path "nni-rtr1"
+                no shutdown
+            exit
+            lsp "nni-rtr1" sr-te
+                shutdown
+                to 10.4.0.1
+                max-sr-labels 4 additional-frr-labels 0
+                primary "nni-rtr1"
+                exit
+            exit
+            no shutdown
+        exit
+    exit
+
+#--------------------------------------------------
+echo "Service Configuration"
+#--------------------------------------------------
+    service
+        customer 1 name "1" create
+            description "Default customer"
+        exit
+        system
+            bgp-evpn
+                ingress-replication-bum-label-block bum
+                ethernet-segment "ads-rtr1"  create
+                    auto-esi type-1
+                    service-carving
+                        mode auto
+                    exit
+                    multi-homing all-active
+                    lag 1
+                    no shutdown
+                exit
+                ethernet-segment "ads-rtr2"  create
+                    auto-esi type-1
+                    service-carving
+                        mode auto
+                    exit
+                    multi-homing all-active
+                    lag 2
+                    no shutdown
+                exit
+            exit
+        exit
+        vpls 10 name "10" customer 1 create
+            split-horizon-group "access" create
+            exit
+            bgp
+                route-distinguisher 10:1
+                route-target export target:10:1 import target:10:1
+                adv-service-mtu 9100
+            exit
+            bgp-evpn
+                evi 10
+                mpls bgp 1
+                    ingress-replication-bum-label
+                    no shutdown
+                exit
+            exit
+            stp
+                shutdown
+            exit
+            sap lag-1:10 split-horizon-group "access" create
+                no shutdown
+            exit
+            no shutdown
+        exit
+    exit
+#--------------------------------------------------
+echo "Router (Service Side) Configuration"
+#--------------------------------------------------
+    router Base
+#--------------------------------------------------
+echo "ISIS Configuration"
+#--------------------------------------------------
+        isis 0
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "BGP Configuration"
+#--------------------------------------------------
+        bgp
+            rapid-withdrawal
+            rapid-update evpn
+            group "ibgp"
+                family evpn
+                type internal
+                neighbor 10.3.0.1
+                exit
+                neighbor 10.3.0.2
+                exit
+            exit
+            no shutdown
+        exit
+    exit
+
+#--------------------------------------------------
+echo "Log all events for service vprn, log syslog tls-client-profile Configuration"
+#--------------------------------------------------
+    log
+    exit
+
+exit all
+
+# Finished SAT FEB 18 03:54:06 2023 UTC
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+evpntest2/config.txt at main · aroth01/evpntest2
